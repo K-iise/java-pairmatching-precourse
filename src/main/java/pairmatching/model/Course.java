@@ -16,6 +16,6 @@ public enum Course {
                 return course;
             }
         }
-        throw new IllegalArgumentException("[Error] 유효하지 않은 과정입니다.");
+        throw new IllegalArgumentException("[ERROR] 유효하지 않은 과정입니다.");
     }
 }

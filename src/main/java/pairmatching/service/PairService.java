@@ -27,7 +27,7 @@ public class PairService {
 
         int tryCount = 0;
 
-        while (tryCount > 3) {
+        while (tryCount < 3) {
             tryCount++;
 
             // 크루 이름 랜덤 섞기
@@ -42,7 +42,7 @@ public class PairService {
             }
         }
 
-        throw new IllegalStateException("페어 매칭에 실패했습니다.");
+        throw new IllegalStateException("[ERROR] 페어 매칭에 실패했습니다.");
     }
 
 

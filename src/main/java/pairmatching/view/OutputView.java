@@ -21,11 +21,18 @@ public class OutputView {
 
     public void printPairMatchingResult(PairHistory pairHistory){
         System.out.println("페어 매칭 결과 입니다.");
+
+        if (pairHistory == null){
+            System.out.println("[ERROR] 매칭 이력이 없습니다.\n");
+            return;
+        }
+
         List<Pair> pairList = pairHistory.getPairs();
 
         for (Pair pair : pairList){
             System.out.println(pair.getCrew1() + " : " + pair.getCrew2());
         }
+        System.out.println();
     }
 
     public void printErrorMessage(String message) {

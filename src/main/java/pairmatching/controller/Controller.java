@@ -27,20 +27,48 @@ public class Controller {
     }
 
     public void run() {
+        while (true) {
+            // 기능 선택
+            String choice = loopChoice();
+            
+            // 페어 매칭
+            if (choice.equals("1")){
+                // 과정, 레벨, 미션 입력
+                String condition  = loopPairCondition();
 
-        // 기능 선택
-        String choice = loopChoice();
+                // 페어 매칭 후 출력
+                MatchInfo matchInfo = MatchInfo.from(condition);
+                pairService.pairMatching(matchInfo);
 
-        // 과정, 레벨, 미션 입력
-        String condition  = loopPairCondition();
+                // 페어 매칭 조회
+                PairHistory pairHistory = pairService.getPairHistory(matchInfo);
+                outputView.printPairMatchingResult(pairHistory);
+            }
+            
+            // 페어 조회
+            if (choice.equals("2")){
+                // 과정, 레벨, 미션 입력
+                String condition  = loopPairCondition();
 
-        // 페어 매칭 후 출력
-        MatchInfo matchInfo = MatchInfo.from(condition);
-        pairService.pairMatching(matchInfo);
-        
-        // 페어 매칭 조회
-        PairHistory pairHistory = pairService.getPairHistory(matchInfo);
-        outputView.printPairMatchingResult(pairHistory);
+                // 페어 매칭 후 출력
+                MatchInfo matchInfo = MatchInfo.from(condition);
+
+                // 페어 매칭 조회
+                PairHistory pairHistory = pairService.getPairHistory(matchInfo);
+                outputView.printPairMatchingResult(pairHistory);
+            }
+            
+            // 페어 초기화
+            if (choice.equals("3")){
+
+            }
+            
+            // 종료
+            if (choice.equals("Q")){
+                break;
+            }
+        }
+
     }
 
     private String loopChoice(){

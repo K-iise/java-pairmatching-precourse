@@ -25,7 +25,7 @@ public enum Mission {
             }
         }
 
-        throw new IllegalArgumentException("[Error] 유효하지 않은 미션입니다.");
+        throw new IllegalArgumentException("[ERROR] 유효하지 않은 미션입니다.");
     }
 
     public static Mission getMissionByLevel(Level level, String missionName) {
