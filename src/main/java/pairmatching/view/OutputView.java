@@ -35,6 +35,10 @@ public class OutputView {
         System.out.println();
     }
 
+    public void printRetrievePairMatching(){
+
+    }
+
     public void printErrorMessage(String message) {
         System.out.println(message);
     }

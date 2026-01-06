@@ -15,11 +15,12 @@ public class PairService {
 
     private CrewReader crewReader;
     private PairGenerator pairGenerator;
-    private List<PairHistory> pairHistoryList = new ArrayList<>();
+    private List<PairHistory> pairHistoryList;
 
     public PairService(CrewReader crewReader, PairGenerator pairGenerator) {
         this.crewReader = crewReader;
         this.pairGenerator = pairGenerator;
+        this.pairHistoryList = new ArrayList<>();
     }
 
     public void pairMatching(MatchInfo matchInfo){
@@ -53,6 +54,15 @@ public class PairService {
             }
         }
         return null;
+    }
+
+    public void removePairHistory(MatchInfo matchInfo){
+        PairHistory fake = new PairHistory(matchInfo.getCourse(), matchInfo.getLevel(), matchInfo.getMission(), null);
+        pairHistoryList.remove(fake);
+    }
+
+    public void clearPairHistory(){
+        pairHistoryList = new ArrayList<>();
     }
 
     private boolean checkDuplicationValidate(List<Pair> pairList, Course course, Level level){

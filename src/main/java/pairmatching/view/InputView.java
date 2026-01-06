@@ -23,4 +23,10 @@ public class InputView {
         System.out.println("ex) 백엔드, 레벨1, 자동차경주");
         return Console.readLine();
     }
+
+    public String readReMatching(){
+        System.out.println("매칭 정보가 있습니다. 다시 매칭하겠습니까?");
+        System.out.println("네 | 아니오");
+        return Console.readLine();
+    }
 }

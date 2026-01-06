@@ -33,16 +33,7 @@ public class Controller {
             
             // 페어 매칭
             if (choice.equals("1")){
-                // 과정, 레벨, 미션 입력
-                String condition  = loopPairCondition();
-
-                // 페어 매칭 후 출력
-                MatchInfo matchInfo = MatchInfo.from(condition);
-                pairService.pairMatching(matchInfo);
-
-                // 페어 매칭 조회
-                PairHistory pairHistory = pairService.getPairHistory(matchInfo);
-                outputView.printPairMatchingResult(pairHistory);
+                proceedMatching();
             }
             
             // 페어 조회
@@ -60,7 +51,7 @@ public class Controller {
             
             // 페어 초기화
             if (choice.equals("3")){
-
+                pairService.clearPairHistory();
             }
             
             // 종료
@@ -69,6 +60,30 @@ public class Controller {
             }
         }
 
+    }
+
+    private void proceedMatching() {
+        while (true){
+            // 과정, 레벨, 미션 입력
+            String condition  = loopPairCondition();
+            // 이전 매칭 조회
+            MatchInfo matchInfo = MatchInfo.from(condition);
+            PairHistory pairHistory = pairService.getPairHistory(matchInfo);
+
+            if (pairHistory != null){
+                String answer = inputView.readReMatching();
+                if (answer.equals("아니오")) {
+                    continue; // 다시 '과정, 레벨, 미션' 입력으로 돌아감
+                }
+                pairService.removePairHistory(matchInfo);
+            }
+
+            // 매칭 진행 (새 매칭 '네'를 누른 경우)
+            pairService.pairMatching(matchInfo);
+            PairHistory result = pairService.getPairHistory(matchInfo);
+            outputView.printPairMatchingResult(result);
+            break; // 매칭 완료 시 '기능 선택' 메뉴로 탈출
+        }
     }
 
     private String loopChoice(){
