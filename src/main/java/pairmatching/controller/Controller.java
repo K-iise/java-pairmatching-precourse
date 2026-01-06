@@ -7,6 +7,8 @@ import pairmatching.model.Course;
 import pairmatching.model.Crew;
 import pairmatching.model.MatchInfo;
 import pairmatching.service.CrewReader;
+import pairmatching.service.PairHistory;
+import pairmatching.service.PairService;
 import pairmatching.service.Validator;
 import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
@@ -16,18 +18,29 @@ public class Controller {
     private final InputView inputView;
     private final OutputView outputView;
     private final Validator validator;
-
-    public Controller(InputView inputView, OutputView outputView, Validator validator) {
+    private final PairService pairService;
+    public Controller(InputView inputView, OutputView outputView, Validator validator, PairService pairService) {
         this.inputView = inputView;
         this.outputView = outputView;
         this.validator = validator;
+        this.pairService = pairService;
     }
 
-    public void run(){
+    public void run() {
+
+        // 기능 선택
         String choice = loopChoice();
+
+        // 과정, 레벨, 미션 입력
         String condition  = loopPairCondition();
 
+        // 페어 매칭 후 출력
         MatchInfo matchInfo = MatchInfo.from(condition);
+        pairService.pairMatching(matchInfo);
+        
+        // 페어 매칭 조회
+        PairHistory pairHistory = pairService.getPairHistory(matchInfo);
+        outputView.printPairMatchingResult(pairHistory);
     }
 
     private String loopChoice(){

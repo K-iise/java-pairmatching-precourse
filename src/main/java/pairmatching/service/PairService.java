@@ -7,6 +7,7 @@ import java.util.List;
 import pairmatching.model.Course;
 import pairmatching.model.Crew;
 import pairmatching.model.Level;
+import pairmatching.model.MatchInfo;
 import pairmatching.model.Mission;
 import pairmatching.model.Pair;
 
@@ -16,8 +17,13 @@ public class PairService {
     private PairGenerator pairGenerator;
     private List<PairHistory> pairHistoryList = new ArrayList<>();
 
-    public void pairMatching(Course course, Level level, Mission mission) throws IOException {
-        List<String> crewList = crewReader.readCrewFile(course);
+    public PairService(CrewReader crewReader, PairGenerator pairGenerator) {
+        this.crewReader = crewReader;
+        this.pairGenerator = pairGenerator;
+    }
+
+    public void pairMatching(MatchInfo matchInfo){
+        List<String> crewList = crewReader.readCrewFile(matchInfo.getCourse());
 
         int tryCount = 0;
 
@@ -30,14 +36,23 @@ public class PairService {
             List<Pair> pairList = pairGenerator.getPairList(shuffledCrew);
 
             // 페어 검증
-            if (checkDuplicationValidate(pairList, course, level)) {
-                // 성공 → 히스토리 저장
-                pairHistoryList.add(new PairHistory(course, level, mission, pairList));
+            if (checkDuplicationValidate(pairList, matchInfo.getCourse(), matchInfo.getLevel())) {
+                pairHistoryList.add(new PairHistory(matchInfo.getCourse(), matchInfo.getLevel(), matchInfo.getMission(), pairList));
                 return;
             }
         }
 
         throw new IllegalStateException("페어 매칭에 실패했습니다.");
+    }
+
+
+    public PairHistory getPairHistory(MatchInfo matchInfo){
+        for (PairHistory pairHistory : pairHistoryList){
+            if (pairHistory.isSameCondition(matchInfo)){
+                return pairHistory;
+            }
+        }
+        return null;
     }
 
     private boolean checkDuplicationValidate(List<Pair> pairList, Course course, Level level){

@@ -29,4 +29,12 @@ public class Pair {
     public int hashCode() {
         return Objects.hash(crew1) + Objects.hash(crew2);
     }
+
+    public String getCrew1() {
+        return crew1;
+    }
+
+    public String getCrew2() {
+        return crew2;
+    }
 }

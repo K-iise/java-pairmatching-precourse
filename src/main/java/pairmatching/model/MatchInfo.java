@@ -20,4 +20,16 @@ public class MatchInfo {
 
         return new MatchInfo(course, level, mission);
     }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public Mission getMission() {
+        return mission;
+    }
 }

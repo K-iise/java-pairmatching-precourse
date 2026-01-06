@@ -10,19 +10,25 @@ import pairmatching.model.Course;
 import pairmatching.model.Crew;
 
 public class CrewReader {
-    public List<String> readCrewFile(Course course) throws IOException {
-        String courseName = checkCourse(course);
-        BufferedReader br = new BufferedReader(
-                new InputStreamReader(
-                        getClass().getClassLoader().getResourceAsStream(courseName)
-                )
-        );
-        String data;
-        List<String> crewList = new ArrayList<>();
-        while ((data=br.readLine()) != null) {
-            crewList.add(data);
+    public List<String> readCrewFile(Course course){
+
+        try {
+            String courseName = checkCourse(course);
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(
+                            getClass().getClassLoader().getResourceAsStream(courseName)
+                    )
+            );
+            String data;
+            List<String> crewList = new ArrayList<>();
+            while ((data=br.readLine()) != null) {
+                crewList.add(data);
+            }
+            return crewList;
+        } catch (IOException e){
+            throw new IllegalStateException("[Error] " + course.name() + "과정을 찾을 수 없습니다.");
         }
-        return crewList;
+
     }
 
     private String checkCourse(Course course){
