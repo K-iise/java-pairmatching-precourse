@@ -5,6 +5,7 @@ import java.util.List;
 import org.mockito.stubbing.ValidableAnswer;
 import pairmatching.model.Course;
 import pairmatching.model.Crew;
+import pairmatching.model.MatchInfo;
 import pairmatching.service.CrewReader;
 import pairmatching.service.Validator;
 import pairmatching.view.InputView;
@@ -12,9 +13,9 @@ import pairmatching.view.OutputView;
 
 public class Controller {
 
-    private InputView inputView;
-    private OutputView outputView;
-    private Validator validator;
+    private final InputView inputView;
+    private final OutputView outputView;
+    private final Validator validator;
 
     public Controller(InputView inputView, OutputView outputView, Validator validator) {
         this.inputView = inputView;
@@ -24,7 +25,9 @@ public class Controller {
 
     public void run(){
         String choice = loopChoice();
-        outputView.printPairMatching();
+        String condition  = loopPairCondition();
+
+        MatchInfo matchInfo = MatchInfo.from(condition);
     }
 
     private String loopChoice(){
@@ -36,7 +39,18 @@ public class Controller {
             } catch (IllegalArgumentException e){
                 outputView.printErrorMessage(e.getMessage());
             }
+        }
+    }
 
+    private String loopPairCondition(){
+        while (true) {
+            try {
+                String pairCondition = inputView.readPair();
+                validator.validatePairCondition(pairCondition);
+                return pairCondition;
+            } catch (IllegalArgumentException e){
+                outputView.printErrorMessage(e.getMessage());
+            }
         }
     }
 
